@@ -15,6 +15,13 @@ impl Rectangle {
     }//注意：不需要加分号
 }// 不需要加分号
 
+// 实现关联方法，在Rectangle的命名空间外实现插入方法
+impl Rectangle {
+    fn square(size: u32) -> Rectangle {
+        Rectangle { w: size, h: size }
+    }
+}
+
 fn main() {
     //let rect1 = (30, 50);
 
@@ -28,11 +35,13 @@ fn main() {
         ..b //注意rust中，只有表达式能有返回值
     };
 
+    let sq: Rectangle = Rectangle::square(3);
+
     println!("{:#?}  \n\n c is \n{:#?}", b, c);
 
     println!(
-        "The area of the rectangle is {} {}",
-        b.area(), b.can_hold(&c)
+        "The area of the rectangle is {} {} {}",
+        b.area(), b.can_hold(&c), sq.area()
     );
 
 }
