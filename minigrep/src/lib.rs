@@ -1,10 +1,12 @@
 use std::fs;
 use std::error::Error;
+use std::env;
 
 #[derive(Debug)]
 pub struct Config {
     pub query: String,
     pub filename: String,
+    pub case_sensitive: bool,
 }
 
 // 写一个单元测试的用例
@@ -77,8 +79,14 @@ pub fn run(config: Config) -> Result<(),Box<dyn Error>> {
     // config.filename.clone() 复制一个变量传递到read_to_string中，防止config的所有权转移
     let contents: String = fs::read_to_string(config.filename.clone()).expect("read string is error");
 
-    for line in search(&config.query, &contents){
-        println!("{:?}\n", line);
+    let results = if config.case_sensitive {
+        search(&config.query, &contents)
+    } else {
+        search_case_insensitive(&config.query, &contents)
+    };
+
+    for line in results{
+        println!("{:?}", line);
     }
 
     Ok(())
@@ -98,6 +106,11 @@ impl Config{
         
         let filename = args[2].clone();
 
-        return Ok(Config { query, filename});
+        // 获取环境变量 CASE_SENSITIVE 的值，处理当前字符串
+        let case_sensitive = env::var("CASE_SENSITIVE").unwrap() == "1";
+
+        println!("case:{} {:?}", case_sensitive, case_sensitive);
+
+        return Ok(Config { query, filename, case_sensitive});
     }
 }

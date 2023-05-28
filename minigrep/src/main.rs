@@ -16,6 +16,7 @@ fn main() {
                                 Config {
                                     query: String::from("hello"),
                                     filename: String::from("world"),
+                                    case_sensitive: true,
                                 }
                             }
                     };
