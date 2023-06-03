@@ -1,4 +1,3 @@
-use core::time;
 use std::{time::Duration, thread::sleep};
 
 use rand::Rng;//随机产生数字
